@@ -195,5 +195,8 @@ public class MainActivity extends FragmentActivity {
         map.animateCamera(cameraUpdate);
         // мгновенное перемещение
 //        map.moveCamera(cameraUpdate);
+
+        // ограничивается область системных значков гугл мапс
+//        map.setPadding(50, 50, 50, 100);
     }
 }
