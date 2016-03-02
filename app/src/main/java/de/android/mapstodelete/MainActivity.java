@@ -71,6 +71,7 @@ public class MainActivity extends FragmentActivity {
         UiSettings settings = map.getUiSettings();
         settings.setAllGesturesEnabled(true);
         settings.setCompassEnabled(true);
+        map.setMyLocationEnabled(true);
         settings.setMyLocationButtonEnabled(true);
     }
 
