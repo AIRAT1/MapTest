@@ -7,11 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 public class MainActivity extends FragmentActivity {
     private final int START_MAP_STATE_VALUE = 1;
@@ -93,18 +96,22 @@ public class MainActivity extends FragmentActivity {
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                Toast.makeText(MainActivity.this, "onMapClick: "
-                        + latLng.latitude + ", " + latLng.longitude,
-                        Toast.LENGTH_SHORT).show();
+                Log.d(LOG, "onMapClick: "
+                        + latLng.latitude + ", " + latLng.longitude);
+//                Toast.makeText(MainActivity.this, "onMapClick: "
+//                        + latLng.latitude + ", " + latLng.longitude,
+//                        Toast.LENGTH_SHORT).show();
             }
         });
         // координаты долгого нажатия
         map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                Toast.makeText(MainActivity.this, "onMapLongClick: "
-                                + latLng.latitude + ", " + latLng.longitude,
-                        Toast.LENGTH_SHORT).show();
+                Log.d(LOG, "onMapLongClick: "
+                        + latLng.latitude + ", " + latLng.longitude);
+//                Toast.makeText(MainActivity.this, "onMapLongClick: "
+//                                + latLng.latitude + ", " + latLng.longitude,
+//                        Toast.LENGTH_SHORT).show();
             }
         });
         // даные с камеры: куда смотрит, угол поворота, угол наклона, уровень зума
@@ -142,5 +149,47 @@ public class MainActivity extends FragmentActivity {
             default:
                 break;
         }
+    }
+
+    public void onCameraUpdate(View view) {
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(- 27, 133))
+                .zoom(5)
+                .bearing(0)
+                .tilt(20)
+                .build();
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+        map.animateCamera(cameraUpdate, 2000, new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                Toast.makeText(MainActivity.this, "Good work!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(MainActivity.this, "Error(", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void onMoveTo(View view) {
+        // перемещение в область с рамкой в 100 пикселов вокруг
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(
+                new LatLngBounds(new LatLng(- 39, 112), new LatLng(- 11, 154)), 100);
+
+        // перемещение в указанную точку с зумом
+//        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(
+//                new LatLng(50, 0), 10);
+
+        // перемещение камеры на указанное количество пикселов
+//        CameraUpdate cameraUpdate = CameraUpdateFactory.scrollBy(10, 20);
+
+        // изменение текущего зума на указанную величину + приближение - удаление
+//        CameraUpdate cameraUpdate = CameraUpdateFactory.zoomBy(3);
+
+
+        map.animateCamera(cameraUpdate);
+        // мгновенное перемещение
+//        map.moveCamera(cameraUpdate);
     }
 }

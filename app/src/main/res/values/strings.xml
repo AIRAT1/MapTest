@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">MapsToDelete</string>
-    <string name="change_map_state">Change map state</string>
+    <string name="change_map_state">Mapstate</string>
+    <string name="on_camera_update">Australia</string>
+    <string name="move_to">Move to</string>
 </resources>
