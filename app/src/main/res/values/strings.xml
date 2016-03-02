@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">MapsToDelete</string>
-    <string name="test">Test</string>
+    <string name="change_map_state">Change map state</string>
 </resources>

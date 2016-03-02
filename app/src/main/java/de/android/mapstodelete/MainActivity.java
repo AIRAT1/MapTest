@@ -5,10 +5,13 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends FragmentActivity {
     private final int START_MAP_STATE_VALUE = 1;
@@ -69,14 +72,53 @@ public class MainActivity extends FragmentActivity {
 
     private void settings() {
         UiSettings settings = map.getUiSettings();
+        // добавить все жесты
         settings.setAllGesturesEnabled(true);
+        // добавить компас
         settings.setCompassEnabled(true);
+        // определение местоположения девайса
         map.setMyLocationEnabled(true);
+        // добавления кнопки перехода на текущие координаты
         settings.setMyLocationButtonEnabled(true);
+        // добавить жесты вращения
+        settings.setRotateGesturesEnabled(true);
+        // добавить кнопки зума
+        settings.setZoomControlsEnabled(true);
+        // добавить жесты зума
+        settings.setZoomGesturesEnabled(true);
     }
 
     private void init() {
-
+        // координаты нажатия
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Toast.makeText(MainActivity.this, "onMapClick: "
+                        + latLng.latitude + ", " + latLng.longitude,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        // координаты долгого нажатия
+        map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                Toast.makeText(MainActivity.this, "onMapLongClick: "
+                                + latLng.latitude + ", " + latLng.longitude,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        // даные с камеры: куда смотрит, угол поворота, угол наклона, уровень зума
+        map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition camera) {
+                Log.d(LOG, "onCameraChange: "
+                        + camera.target.latitude + ", "
+                        + camera.target.longitude + ", "
+                        + camera.bearing + ", "
+                        + camera.tilt + ", "
+                        + camera.zoom);
+            }
+        });
     }
 
 
