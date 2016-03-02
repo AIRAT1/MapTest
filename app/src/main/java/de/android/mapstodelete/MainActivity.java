@@ -83,6 +83,10 @@ public class MainActivity extends FragmentActivity {
         map.setMyLocationEnabled(true);
         // добавления кнопки перехода на текущие координаты
         settings.setMyLocationButtonEnabled(true);
+        // показывать этажи
+        map.setIndoorEnabled(true);
+        // показывать 3d здания
+        map.setBuildingsEnabled(true);
         // добавить жесты вращения
         settings.setRotateGesturesEnabled(true);
         // добавить кнопки зума
