@@ -12,9 +12,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends FragmentActivity {
     private final int START_MAP_STATE_VALUE = 1;
@@ -198,5 +201,69 @@ public class MainActivity extends FragmentActivity {
 
         // ограничивается область системных значков гугл мапс
 //        map.setPadding(50, 50, 50, 100);
+    }
+
+    public void onAddMarker(View view) {
+        map.addMarker(new MarkerOptions()
+                // где расположен
+                .position(new LatLng(0, 0))
+                // текст при клике
+                .title("Hello world")
+                // прозрачность
+                .alpha(.5f)
+                // какой точкой маркер показывает на карту
+                .anchor(.5f, 0)
+                // перетаскивание
+                .draggable(true)
+                // крутится вместе с картой
+                .flat(true)
+                // текст под заголовком
+                .snippet("Snippet text")
+                // стандартный маркер но выбран другой цвет
+                .icon(BitmapDescriptorFactory.defaultMarker(
+                        BitmapDescriptorFactory.HUE_AZURE
+                )));
+
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(20, 20))
+                // значения маркера по дефолту
+                .icon(BitmapDescriptorFactory.defaultMarker())
+                // поворот льносительно точки anchor
+                .rotation(45));
+
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(10, 10))
+                        // поставить свою картинку вместо маркера
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher))
+                        // видимость
+                .visible(true));
+
+        // слушатель нажатия на маркер
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Log.d(LOG, "onMarkerClick " + String.valueOf(marker));
+                return true;
+            }
+        });
+
+        // слушатель перетаскивания маркера
+        map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker marker) {
+                Log.d(LOG, "onMarkerDragStart " + System.currentTimeMillis());
+            }
+
+            @Override
+            public void onMarkerDrag(Marker marker) {
+                Log.d(LOG, "onMarkerDrag");
+            }
+
+            @Override
+            public void onMarkerDragEnd(Marker marker) {
+                Log.d(LOG, "onMarkerDragEnd " + System.currentTimeMillis());
+            }
+        });
+
     }
 }
