@@ -1,11 +1,13 @@
 package de.android.mapstodelete;
 
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -15,6 +17,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlay;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -29,6 +33,7 @@ public class MainActivity extends FragmentActivity {
     SupportMapFragment mapFragment;
     GoogleMap map;
     int mapState;
+    private Marker marker;
 
 
     @Override
@@ -219,19 +224,19 @@ public class MainActivity extends FragmentActivity {
         map.addMarker(new MarkerOptions()
                 // где расположен
                 .position(new LatLng(0, 0))
-                // текст при клике
+                        // текст при клике
                 .title("Hello world")
-                // прозрачность
-                .alpha(.5f)
-                // какой точкой маркер показывает на карту
-                .anchor(.5f, 0)
-                // перетаскивание
+                        // прозрачность
+                        //.alpha(.5f)
+                        // какой точкой маркер показывает на карту
+                        //.anchor(.5f, 0)
+                        // перетаскивание
                 .draggable(true)
-                // крутится вместе с картой
-                .flat(true)
-                // текст под заголовком
+                        // крутится вместе с картой
+                        //.flat(true)
+                        // текст под заголовком
                 .snippet("Snippet text")
-                // стандартный маркер но выбран другой цвет
+                        // стандартный маркер но выбран другой цвет
                 .icon(BitmapDescriptorFactory.defaultMarker(
                         BitmapDescriptorFactory.HUE_AZURE
                 )));
@@ -254,8 +259,9 @@ public class MainActivity extends FragmentActivity {
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Log.d(LOG, "onMarkerClick " + String.valueOf(marker));
-                return true;
+//                Toast.makeText(MainActivity.this, "onMarkerClick " + String.valueOf(marker), Toast.LENGTH_SHORT).show();
+//                return true;
+                return false;
             }
         });
 
@@ -263,19 +269,98 @@ public class MainActivity extends FragmentActivity {
         map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker marker) {
-                Log.d(LOG, "onMarkerDragStart " + System.currentTimeMillis());
+//                Toast.makeText(MainActivity.this, "onMarkerDragStart " + System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onMarkerDrag(Marker marker) {
-                Log.d(LOG, "onMarkerDrag");
+//                Toast.makeText(MainActivity.this, "onMarkerDrag", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onMarkerDragEnd(Marker marker) {
-                Log.d(LOG, "onMarkerDragEnd " + System.currentTimeMillis());
+//                Toast.makeText(MainActivity.this, "onMarkerDragEnd " + System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    public void onShowInfo(View view) {
+        marker = map.addMarker(new MarkerOptions()
+                .position(new LatLng(50, 50))
+                .title("Hello world")
+                .snippet("Additional text"));
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(50, 70))
+                .title("Hello world")
+                .snippet("Additional text"));
+        map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                if (marker.getId().equals(MainActivity.this.marker.getId())) {
+                    TextView tv = new TextView(MainActivity.this);
+                    tv.setText("Test getInfoWindow");
+                    tv.setTextColor(Color.RED);
+                    return tv;
+                }else {
+                    return null;
+                }
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                TextView tv = new TextView(MainActivity.this);
+                tv.setText("Test getInfoContents");
+                return tv;
+            }
+        });
+    }
+
+    public void onDrawSomething(View view) {
+//        PolylineOptions polylineOptions = new PolylineOptions()
+//                .add(new LatLng(- 5, - 30)).add(new LatLng(-5, - 20))
+//                .add(new LatLng(5, -20)).add(new LatLng(5, -30))
+//                // повторяет поверхность Земли типа
+//                // чем выше значение тем выше нарисован объект
+//                .zIndex(100)
+//                .geodesic(true).visible(true).width(1).color(Color.MAGENTA);
+//        map.addPolyline(polylineOptions);
+//
+//        PolygonOptions polygonOptions = new PolygonOptions()
+//                .add(new LatLng(- 5, - 10)).add(new LatLng(- 5, 0))
+//                .add(new LatLng(5, 0)).add(new LatLng(5, - 10))
+//                .strokeColor(Color.CYAN).strokeWidth(10).fillColor(Color.GREEN);
+//        map.addPolygon(polygonOptions);
+//
+//        CircleOptions circleOptions = new CircleOptions()
+//                .center(new LatLng(0, 15)).radius(500000)
+//                .fillColor(Color.YELLOW).strokeColor(Color.DKGRAY).strokeWidth(5);
+//        map.addCircle(circleOptions);
+
+//        List<LatLng> list = new ArrayList<>();
+//        list.add(new LatLng(-4, -5));
+//        list.add(new LatLng(0, -1));
+//        list.add(new LatLng(4, -5));
+//        list.add(new LatLng(0, -9));
+//
+//        List<LatLng> listPolygon = new ArrayList<>();
+//        listPolygon.add(new LatLng(-5, -10));
+//        listPolygon.add(new LatLng(-5, 0));
+//        listPolygon.add(new LatLng(5, 0));
+//        listPolygon.add(new LatLng(5, -10));
+//
+//        PolygonOptions polygonOptions = new PolygonOptions()
+//                .addAll(listPolygon).addHole(list).strokeColor(Color.CYAN)
+//                .strokeWidth(1).fillColor(Color.GREEN);
+//        Polygon polygon = map.addPolygon(polygonOptions);
+////        polygon.remove();
+
+        // зум рисунка вместе с зумом карты
+        GroundOverlayOptions newarkMap = new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher))
+                .position(new LatLng(0, 0), 500000f, 500000f)
+                .transparency(.5f);
+        GroundOverlay groundOverlay = map.addGroundOverlay(newarkMap);
+        // удалить
+//        groundOverlay.remove();
     }
 }

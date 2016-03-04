@@ -4,4 +4,6 @@
     <string name="on_camera_update">Australia</string>
     <string name="move_to">Move to</string>
     <string name="add_marker">Add marker</string>
+    <string name="showInfo_window">Show info</string>
+    <string name="draw_something">Draw something</string>
 </resources>

@@ -34,8 +34,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:text="@string/showInfo_window"
+            android:onClick="onShowInfo"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/add_marker"
             android:onClick="onAddMarker"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/draw_something"
+            android:onClick="onDrawSomething"/>
     </LinearLayout>
     <fragment
         android:layout_width="match_parent"
